@@ -1,0 +1,6 @@
+---
+kernel_url: http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.15/linux-image-4.14.15-041415-generic_4.14.15-041415.201801231530_amd64.deb
+ss_password: LyGy3PsY7Vbm
+ss_port: 443
+ss_method: chacha20-ietf-poly1305
+sshd_port: 22

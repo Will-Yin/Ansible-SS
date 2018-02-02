@@ -1,0 +1,78 @@
+- name: "Ensure basic packages are there"
+  apt: pkg={{ item }} state=installed
+  with_items:
+  - git
+  - wget
+  - vim
+  - curl
+- name: "Install New Kernel"
+  apt:
+    deb: "{{ kernel_url }}"
+
+- name: Update all packages to the latest version
+  apt:
+    upgrade: dist
+
+- name: "Remove useless packages from the cache"
+  apt:
+    autoclean: yes
+
+- name: "Remove dependencies that are no longer required"
+  apt:
+    autoremove: yes
+
+- name: "Add shadowsocks-libev ppa"
+  apt_repository:
+    repo: 'ppa:max-c-lv/shadowsocks-libev'
+
+- name: "Install shadowsocks-libev latest version"
+  apt:
+    name: shadowsocks-libev
+    state: latest
+
+- name: "Set /etc/shadowsocks-libev/config.json"
+  template:
+    src: ../templates/ss-config.json.j2
+    dest: /etc/shadowsocks-libev/config.json
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - restart-shadowsocks-service
+
+- name: "Enable shadowsocks service"
+  service:
+    name: shadowsocks-libev.service
+    enabled: yes
+  notify:
+  - restart-shadowsocks-service
+
+- name: "Set sysctl"
+  template:
+    src: ../files/60-shadowsocks.conf
+    dest: /etc/sysctl.d/60-shadowsocks.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - apply-sysctl
+
+- name: "Install fail2ban"
+  apt:
+    name: fail2ban
+    state: latest
+
+- name: "Enable fail2ban service"
+  service:
+    name: fail2ban.service
+    enabled: yes
+
+- name: "Set fail2ban policy for SSH"
+  template:
+    src: ../templates/sshd.conf.j2
+    dest: /etc/fail2ban/jail.d/sshd.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+  - restart-fail2ban-service

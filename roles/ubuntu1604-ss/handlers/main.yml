@@ -1,0 +1,12 @@
+- name: restart-shadowsocks-service
+  service:
+    name: shadowsocks-libev.service
+    state: restarted
+
+- name: restart-fail2ban-service
+  service:
+    name: fail2ban.service
+    state: restarted
+
+- name: apply-sysctl
+  shell: sysctl -e -p
