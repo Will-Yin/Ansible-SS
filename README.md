@@ -17,7 +17,7 @@ example:
 ansible-pull -C master -d /var/ansible/gitrepo -i /var/ansible/gitrepo/hosts -U https://github.com/Will-Yin/Ansible-SS.git -e "role=ubuntu1604-ss"
 
 ansible-pull -C master -d /var/ansible/gitrepo -i /var/ansible/gitrepo/hosts
--U http://10.3.1.100:10080/wyin/SS_server_ubuntu1604.git \
+-U https://github.com/Will-Yin/Ansible-SS.git \
 -e "kernel_url=http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.14.15/linux-image-4.14.15-041415-generic_4.14.15-041415.201801231530_amd64.deb" \
 -e "role=ubuntu1604-ss" \
 -e "ss_password=helloword" \
